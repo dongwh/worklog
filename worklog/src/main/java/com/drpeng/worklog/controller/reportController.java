@@ -14,9 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by lihf on 2018-09-29.
  */
 @RestController
-public class reportController {
+public class ReportController {
 
-    public  static Logger logger = LoggerFactory.getLogger(reportController.class);
+    public  static Logger logger = LoggerFactory.getLogger(ReportController.class);
 
     @Autowired
     private RestTemplate restTemplate;

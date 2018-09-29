@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 
 @SpringBootApplication
 @MapperScan("com.drpeng.worklog.dao")
+
 public class WorklogApplication {
 
 	@Bean
