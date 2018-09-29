@@ -24,7 +24,7 @@
                         password="${spring.datasource.password}">
         </jdbcConnection>-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/commodity" userId="root" password="root">
+                        connectionURL="jdbc:mysql://172.16.2.229:58002/pbscrmdev" userId="dbone" password="dbone">
         </jdbcConnection>
         <javaTypeResolver>
             <!-- This property is used to specify whether MyBatis Generator should
@@ -32,7 +32,7 @@
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
         <!-- 生成模型的包名和位置 -->
-        <javaModelGenerator targetPackage="com.example.demo.model"
+        <javaModelGenerator targetPackage="com.drpeng.worklog.model"
                             targetProject="./src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
@@ -44,7 +44,7 @@
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置 -->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.example.demo.dao" targetProject="./src/main/java">
+                             targetPackage="com.drpeng.worklog.dao" targetProject="./src/main/java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
