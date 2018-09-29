@@ -16,8 +16,11 @@ import java.util.List;
 public class ReportServiceImpl implements IReportService {
     public List<DailyReport> queryReport(String curdate){
 
-        
 
+
+
+
+        
 
     }
 
