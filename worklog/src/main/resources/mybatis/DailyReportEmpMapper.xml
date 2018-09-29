@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.dao.DailyReportEmpMapper">
-  <resultMap id="BaseResultMap" type="com.example.demo.model.DailyReportEmp">
+<mapper namespace="com.drpeng.worklog.dao.DailyReportEmpMapper">
+  <resultMap id="BaseResultMap" type="com.drpeng.worklog.model.DailyReportEmp">
 
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
@@ -27,7 +27,7 @@
     delete from daily_report_emp
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.example.demo.model.DailyReportEmp">
+  <insert id="insert" parameterType="com.drpeng.worklog.model.DailyReportEmp">
 
     insert into daily_report_emp (ID, LOGIN_NAME, PASSWORD, 
       BRANCH, STAFF_NAME, STATE, 
@@ -36,7 +36,7 @@
       #{branch,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
       #{ext,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.example.demo.model.DailyReportEmp">
+  <insert id="insertSelective" parameterType="com.drpeng.worklog.model.DailyReportEmp">
 
     insert into daily_report_emp
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -86,7 +86,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.model.DailyReportEmp">
+  <update id="updateByPrimaryKeySelective" parameterType="com.drpeng.worklog.model.DailyReportEmp">
 
     update daily_report_emp
     <set>
@@ -111,7 +111,7 @@
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.demo.model.DailyReportEmp">
+  <update id="updateByPrimaryKey" parameterType="com.drpeng.worklog.model.DailyReportEmp">
 
     update daily_report_emp
     set LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
