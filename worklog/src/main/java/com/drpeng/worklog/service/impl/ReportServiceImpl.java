@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2018/9/29下午3:05
  */
 @Service
-public class reportService implements IReportService {
+public class ReportServiceImpl implements IReportService {
     public List<DailyReport> queryReport(String curdate){
 
         
