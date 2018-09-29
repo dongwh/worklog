@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 public class ReportServiceImpl implements IReportService {
 
-
     @Autowired
     private DailyReportMapper dailyReportMapper;
     @Override
