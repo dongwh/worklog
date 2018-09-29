@@ -1,17 +1,17 @@
-package com.drpeng.worklog.Util;
+package com.drpeng.worklog.util;
 
-import com.drpeng.worklog.Util.json.CommonObjectMapper;
-import com.drpeng.worklog.Util.json.ObjectFilterMixIn;
+import com.drpeng.common.json.CommonObjectMapper;
+import com.drpeng.common.json.ObjectFilterMixIn;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 /**
- * @author weizixuan
- * @Package com.drpeng.worklog.Util
- * @Description:
- * @date 2018/9/29下午4:07
+ * JSON 工具类
+ *
+ * @author zhaoyp
+ * @since 1.0.0
  */
 public final class JsonUtil {
 
@@ -39,7 +39,7 @@ public final class JsonUtil {
      * @param <T>
      * @return
      */
-    public  static <T> String toJsonWithFilterAllExcept(T pojo,Class<?> target,String ... property){
+    public  static <T> String toJsonWithFilterAllExcept(T pojo, Class<?> target, String... property){
         String json;
         ObjectMapper objectMapper = new CommonObjectMapper();
         SimpleFilterProvider filterProvider = new SimpleFilterProvider();
@@ -62,7 +62,7 @@ public final class JsonUtil {
      * @param <T>
      * @return
      */
-    public  static <T> String toJsonWithSerializeAllExcept(T pojo, Class<?> target, String ... property){
+    public  static <T> String toJsonWithSerializeAllExcept(T pojo, Class<?> target, String... property){
         String json;
         ObjectMapper objectMapper = new CommonObjectMapper();
         SimpleFilterProvider filterProvider = new SimpleFilterProvider();
@@ -91,9 +91,3 @@ public final class JsonUtil {
         return pojo;
     }
 }
-
-
-
-
-
-
