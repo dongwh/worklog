@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>LOGIN IN PAGE </title>
+    <link href="/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/plugin/tempo/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/plugin/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/plugin/tempo/css/templatemo_style.css" rel="stylesheet" type="text/css"/>
+    <script src="/plugin/jquery/jquery-2.1.4/jquery.min.js"></script>
+    <script src="/plugin/layer/layer.js"></script>
+
+</head>
+<body class="templatemo-bg-gray">
+<div class="container">
+    <h1 class="margin-bottom-15">日报</h1>
+    <div class="space-4"></div>
+    <div class="form-group" id="d_month">
+        <label class="col-sm-3 control-label no-padding-right" >月份 : </label>
+        <div class="col-sm-5">
+            <input type="text" id="curDate" name="curDate" placeholder="当前时间" class="form-control" readonly="readonly"/>
+        </div>
+    </div>
+    <div class="space-4"></div>
+    <div class="form-group" id="d_reduce">
+        <label class="col-sm-3 control-label no-padding-right" for="CONTENT">日报内容 : </label>
+        <div class="col-sm-5">
+            <input type="text" id="CONTENT" placeholder="日报内容" class="form-control"  />
+        </div>
+    </div>
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-3 col-md-9" style="margin-top: 100px">
+            <button class="btn btn-app btn-default" type="button" id="submitBtn" style="margin-left: 90px" th:onclick="'javascript:saveDate();'">
+                <i class="ace-icon fa fa-undo bigger-150"></i>
+                确认
+            </button>
+        </div>
+    </div>
+    </form>
+
+</div>
+</div>
+<script th:inline="javascript">
+
+
+    function saveDate() {
+        var curDate=$("#curDate").val();
+        var content=$("#CONTENT").val();
+        document.getElementById("tradeType").innerHTML="";
+        if(curDate == ""){
+            layer.alert("请选择日期");
+            return false;
+        }
+        if(content == ""){
+            layer.alert("请输入工作内容");
+            return false;
+        }
+        $.ajax({
+            type: "post",
+            url: "submitReport",
+            dataType:'json',
+            data: {
+                curDate: curDate,
+                content: content
+            },
+            success: function (data, status) {
+                console.info(data);
+                if(data.result_code=="success"){
+                    window.location.href = "index";
+                }else if(data.result_code=="error"){
+                    layer.alert(data.message)
+                }
+            },
+            <!--用户名密码验证失败-->
+            error: function () {layer.alert("服务器错误")}
+        });
+    };
+</script>
+
+</body>
+</html>
