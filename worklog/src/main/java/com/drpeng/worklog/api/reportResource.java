@@ -2,7 +2,6 @@ package com.drpeng.worklog.api;
 
 import com.drpeng.worklog.model.DailyReport;
 import com.drpeng.worklog.service.IReportService;
-import com.drpeng.worklog.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +28,7 @@ public class ReportResource {
         param.clear();
         param.put("data",reportData);
         param.put("total",reportData.size());
-        return JsonUtil.toJson(param);
+        return com.drpeng.worklog.util.JsonUtil.toJson(param);
 
     }
 
