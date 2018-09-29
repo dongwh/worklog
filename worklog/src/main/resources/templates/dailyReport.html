@@ -36,6 +36,29 @@
                 <i class="ace-icon fa fa-undo bigger-150"></i>
                 确认
             </button>
+            <button class="btn btn-app btn-default" type="button" id="query" style="margin-left: 90px" th:onclick="'javascript:queryDate();'">
+                <i class="ace-icon fa fa-undo bigger-150"></i>
+                查询
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>提交人</th>
+                            <th>内容</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -78,6 +101,36 @@
             error: function () {layer.alert("服务器错误")}
         });
     };
+
+
+    function queryDate() {
+        var curDate=$("#curDate").val();
+        var myTable = datatableManager.dataObject = $('#example').dataTable($.extend({
+            "ajax": function (data, callback, settings) {
+
+            $.ajax({
+            type: "post",
+            url: "submitReport",
+            dataType:'json',
+            data: {
+                curDate: curDate,
+            },
+            success: function (data) {
+                console.info(data);
+                if(data.result_code=="success"){
+                    window.location.href = "index";
+                }else if(data.result_code=="error"){
+                    layer.alert(data.message)
+                }
+            },
+            error: function () {layer.alert("服务器错误")}
+            });
+            },
+        }, CONSTANT.DATA_TABLES.DEFAULT_OPTION)).api();
+
+
+    };
+
 </script>
 
 </body>
