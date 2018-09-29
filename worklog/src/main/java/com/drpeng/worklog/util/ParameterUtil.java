@@ -11,6 +11,7 @@ import java.util.Map;
  * Created by dongwh on 17/6/30.
  */
 public class ParameterUtil {
+
     public static String getParameter(String name, HttpServletRequest request) {
         return request.getParameter(name);
     }

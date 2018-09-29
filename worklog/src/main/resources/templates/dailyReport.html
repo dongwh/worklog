@@ -4,13 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>LOGIN IN PAGE </title>
     <link href="/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/plugin/tempo/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="/plugin/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     <link href="/plugin/tempo/css/templatemo_style.css" rel="stylesheet" type="text/css"/>
     <script src="/plugin/jquery/jquery-2.1.4/jquery.min.js"></script>
     <script src="/plugin/layer/layer.js"></script>
+    <script language="javascript" type="text/javascript" src="/date/My97DatePicker/WdatePicker.js"></script>
+
 
 </head>
 <body class="templatemo-bg-gray">
@@ -18,16 +19,24 @@
     <h1 class="margin-bottom-15">日报</h1>
     <div class="space-4"></div>
     <div class="form-group" id="d_month">
-        <label class="col-sm-3 control-label no-padding-right" >月份 : </label>
+        <label class="col-sm-3 control-label no-padding-right" >日报时间 : </label>
         <div class="col-sm-5">
-            <input type="text" id="curDate" name="curDate" placeholder="当前时间" class="form-control" readonly="readonly"/>
+            <input type="text" id="curDate" name="curDate" placeholder="日报时间" class="form-control" readonly="readonly" onClick="WdatePicker({ dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false,skin:'whyGreen',maxDate:'%y-%M-%d' })"/>
+        </div>
+    </div>
+    <div class="space-4"></div>
+    <div class="form-group" id="d_user">
+        <label class="col-sm-3 control-label no-padding-right" for="username">汇报人 : </label>
+        <div class="col-sm-5">
+            <input type="hidden" id="code" name="code" th:value="${session.code}"/>
+            <input type="text" id="username" name="username" class="form-control" readonly="readonly" th:value="${session.username}" />
         </div>
     </div>
     <div class="space-4"></div>
     <div class="form-group" id="d_reduce">
-        <label class="col-sm-3 control-label no-padding-right" for="CONTENT">日报内容 : </label>
+        <label class="col-sm-3 control-label no-padding-right" for="content">日报内容 : </label>
         <div class="col-sm-5">
-            <input type="text" id="CONTENT" placeholder="日报内容" class="form-control"  />
+            <input type="text" id="content" placeholder="日报内容" class="form-control"  />
         </div>
     </div>
     <div class="clearfix form-actions">
@@ -70,8 +79,12 @@
 
 
     function saveDate() {
+        debugger;
         var curDate=$("#curDate").val();
-        var content=$("#CONTENT").val();
+        var content=$("#content").val();
+        var userCode=$("#code").val();
+        var userName=$("#username").val();
+
         document.getElementById("tradeType").innerHTML="";
         if(curDate == ""){
             layer.alert("请选择日期");
@@ -83,11 +96,13 @@
         }
         $.ajax({
             type: "post",
-            url: "submitReport",
+            url: "saveReport",
             dataType:'json',
             data: {
                 curDate: curDate,
-                content: content
+                content: content,
+                userCode:userCode,
+                userName:userName
             },
             success: function (data, status) {
                 console.info(data);
