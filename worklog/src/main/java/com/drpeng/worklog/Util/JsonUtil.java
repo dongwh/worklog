@@ -1,7 +1,7 @@
 package com.drpeng.worklog.util;
 
-import com.drpeng.common.json.CommonObjectMapper;
-import com.drpeng.common.json.ObjectFilterMixIn;
+import com.drpeng.worklog.util.json.CommonObjectMapper;
+import com.drpeng.worklog.util.json.ObjectFilterMixIn;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
