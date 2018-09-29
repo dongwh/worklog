@@ -3,6 +3,7 @@ package com.drpeng.worklog.service;
 import com.drpeng.worklog.model.DailyReport;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author miracle_wzx
@@ -12,5 +13,8 @@ import java.util.List;
  */
 public interface IReportService {
     public List<DailyReport> queryReport(String curdate);
+
+    public Map<String, Object> saveReport(Map<String, Object> paramInfo);
+
 
 }
