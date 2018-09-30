@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 
+
 /**
  * Created by lihf on 2018-09-29.
  */
@@ -50,23 +51,27 @@ public class ReportController {
         String userName = request.getParameter("userName");
 
 
-        if(null == curDate) {
+
+        if (null == curDate) {
             pageData.put("result", "提报时间不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             //map转json
             return JsonUtil.toJson(pageData);
         }
-        if(null == content) {
+
+        if (null == content) {
             pageData.put("result", "日报内容不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
         }
-        if(null == code) {
+
+        if (null == code) {
             pageData.put("result", "填报人账号不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
         }
         if(null == userName) {
+
             pageData.put("result", "填报人不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
