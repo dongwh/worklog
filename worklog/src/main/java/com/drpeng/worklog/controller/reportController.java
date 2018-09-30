@@ -1,40 +1,22 @@
 package com.drpeng.worklog.controller;
 
-<<<<<<< HEAD
-import com.drpeng.worklog.service.IReportService;
-import com.drpeng.worklog.util.*;
-import com.drpeng.worklog.util.ParameterUtil;
-=======
+
 import com.drpeng.worklog.model.DailyReport;
 import com.drpeng.worklog.service.IReportService;
 import com.drpeng.worklog.util.JsonUtil;
->>>>>>> 3b251c550ae0884404db1473d79977ff44d457f9
+import com.drpeng.worklog.util.PageData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.ui.ModelMap;
-<<<<<<< HEAD
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-=======
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
->>>>>>> 3b251c550ae0884404db1473d79977ff44d457f9
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-<<<<<<< HEAD
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.Map;
-=======
-import java.util.HashMap;
 import java.util.List;
->>>>>>> 3b251c550ae0884404db1473d79977ff44d457f9
+import java.util.Map;
 
 
 /**
@@ -43,14 +25,10 @@ import java.util.List;
 @RestController
 public class ReportController {
 
-    public  static Logger logger = LoggerFactory.getLogger(ReportController.class);
+    public static Logger logger = LoggerFactory.getLogger(ReportController.class);
 
     @Autowired
     private IReportService reportService;
-
-    @Autowired
-    private IReportService reportService;
-
 
 
     @RequestMapping("/dailyReport")
@@ -61,51 +39,50 @@ public class ReportController {
         return modelAndView;
     }
 
-<<<<<<< HEAD
 
     @PostMapping(value = "/saveReport", produces = "application/json")
     @ResponseBody
     public String saveReport(HttpServletRequest request, HttpSession session) {
         PageData pageData = new PageData(request);
-        String  curDate= request.getParameter("curDate");
+        String curDate = request.getParameter("curDate");
         String content = request.getParameter("content");
         String code = request.getParameter("code");
         String userName = request.getParameter("userName");
 
 
-        if (null==curDate) {
+        if(null == curDate) {
             pageData.put("result", "提报时间不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
-           //map转json
+            //map转json
             return JsonUtil.toJson(pageData);
         }
-        if (null==content) {
+        if(null == content) {
             pageData.put("result", "日报内容不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
         }
-        if (null==code) {
+        if(null == code) {
             pageData.put("result", "填报人账号不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
         }
-        if (null==userName) {
+        if(null == userName) {
             pageData.put("result", "填报人不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
         } else {
 
-            Map<String,Object> result = new HashMap<>();
+            Map<String, Object> result = new HashMap<>();
             pageData.clear();
 
             result = reportService.saveReport(pageData);
 
-            if (null == result || result.size() == 0) {
+            if(null == result || result.size() == 0) {
                 pageData.put("result", "日报新增失败,请联系系统管理员!");
                 pageData.put("result_code", "error");
             }
             String flag = null == result.get("FLAG") ? "NO" : String.valueOf(result.get("FLAG"));
-            if ("OK".equals(flag)) {
+            if("OK".equals(flag)) {
                 pageData.put("result_code", "success");
                 pageData.put("result", null == result.get("INFO") ? "日报新增成功!" : String.valueOf(result.get("INFO")));
             } else {
@@ -114,16 +91,16 @@ public class ReportController {
             }
             return JsonUtil.toJson(pageData);
         }
-=======
+
+    }
     @GetMapping("/report")
-    public String queryReportByCreatDate(@RequestParam(value ="curdate", required = false) String curdate){
-        HashMap<String,Object> param = new HashMap<String,Object>();
+    public String queryReportByCreatDate (@RequestParam(value = "curdate", required = false) String curdate){
+        HashMap<String, Object> param = new HashMap<String, Object>();
         List<DailyReport> reportData = reportService.queryReport(curdate);
         param.clear();
-        param.put("data",reportData);
-        param.put("total",reportData.size());
+        param.put("data", reportData);
+        param.put("total", reportData.size());
         return JsonUtil.toJson(param);
 
->>>>>>> 3b251c550ae0884404db1473d79977ff44d457f9
     }
 }
