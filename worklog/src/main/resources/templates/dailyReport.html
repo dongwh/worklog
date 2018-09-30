@@ -10,9 +10,7 @@
     <link href="/plugin/tempo/css/templatemo_style.css" rel="stylesheet" type="text/css"/>
     <script src="/plugin/jquery/jquery-2.1.4/jquery.min.js"></script>
     <script src="/plugin/layer/layer.js"></script>
-    <script language="javascript" type="text/javascript" src="/date/My97DatePicker/WdatePicker.js"></script>
-
-
+    <script language="javascript" type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 </head>
 <body class="templatemo-bg-gray">
 <div class="container">
@@ -93,7 +91,7 @@
         }
         $.ajax({
             type: "post",
-            url: "http://localhost:9090/saveReport",
+            url: "saveReport",
             dataType:'json',
             data: {
                 curDate: curDate,
@@ -103,12 +101,11 @@
             success: function (data, status) {
                 console.info(data);
                 if(data.result_code=="success"){
-                    window.location.href = "index";
+                    layer.alert(data.result)
                 }else if(data.result_code=="error"){
                     layer.alert(data.message)
                 }
             },
-            <!--用户名密码验证失败-->
             error: function () {layer.alert("服务器错误")}
         });
     };
@@ -120,25 +117,25 @@
         var myTable = datatableManager.dataObject = $('#example').dataTable($.extend({
             "ajax": function (data, callback, settings) {
 
-            $.ajax({
-            type: "GET",
-            url: "report",
-            dataType:'json',
-            data: {
-                curDate: curDate,
-            },
-            contenttype: "application/x-www-form-urlencoded;charset=utf-8",
+                $.ajax({
+                    type: "GET",
+                    url: "report",
+                    dataType:'json',
+                    data: {
+                        curDate: curDate,
+                    },
+                    contenttype: "application/x-www-form-urlencoded;charset=utf-8",
 
-             success: function (data) {
-                console.info(data);
-                if(data.result_code=="success"){
-                    window.location.href = "index";
-                }else if(data.result_code=="error"){
-                    layer.alert(data.message)
-                }
-            },
-            error: function () {layer.alert("服务器错误")}
-            });
+                    success: function (data) {
+                        console.info(data);
+                        if(data.result_code=="success"){
+                            window.location.href = "index";
+                        }else if(data.result_code=="error"){
+                            layer.alert(data.message)
+                        }
+                    },
+                    error: function () {layer.alert("服务器错误")}
+                });
             },
             columns: [
                 {

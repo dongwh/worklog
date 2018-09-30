@@ -41,7 +41,7 @@ public class ReportController {
     }
 
 
-    @PostMapping(value = "/saveReport", produces = "application/json")
+    @PostMapping(value = "/dailyReport/saveReport", produces = "application/json")
     @ResponseBody
     public String saveReport(HttpServletRequest request, HttpSession session) {
         PageData pageData = new PageData(request);
@@ -70,7 +70,6 @@ public class ReportController {
 
             Map<String, Object> result = new HashMap<>();
             result = reportService.saveReport(pageData);
-            pageData.clear();
 
             if(null == result || result.size() == 0) {
                 pageData.put("result", "日报新增失败,请联系系统管理员!");
@@ -90,7 +89,7 @@ public class ReportController {
     }
 
 
-    @GetMapping("/report")
+    @PostMapping("/report")
     public String queryReportByCreatDate (@RequestParam(value = "curdate", required = false) String curdate){
         HashMap<String, Object> param = new HashMap<String, Object>();
         List<DailyReport> reportData = reportService.queryReport(curdate);
