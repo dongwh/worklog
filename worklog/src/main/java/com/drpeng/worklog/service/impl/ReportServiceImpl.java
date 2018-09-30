@@ -3,6 +3,7 @@ package com.drpeng.worklog.service.impl;
 import com.drpeng.worklog.dao.DailyReportMapper;
 import com.drpeng.worklog.model.DailyReport;
 import com.drpeng.worklog.service.IReportService;
+import com.drpeng.worklog.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,21 +39,16 @@ public class ReportServiceImpl implements IReportService {
         DailyReport dailyReport=new DailyReport();
         //String curdate = String.valueOf(paramInfo.get("curdate")).replace("-","");
 
-        String curdate = String.valueOf(paramInfo.get("curdate"));
-        String userCode = String.valueOf(paramInfo.get("userCode"));
+        String curDate = String.valueOf(paramInfo.get("curDate"));
+        //String empId = String.valueOf(paramInfo.get("empId"));
+        String empId = "9517";
         String content = String.valueOf(paramInfo.get("content"));
-        String sate = "1";
+        String state = "1";
         dailyReport.setContent(content);
-        dailyReport.setEmpId(Integer.valueOf(userCode));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date utilDate = null;
-        try {
-            utilDate = sdf.parse(curdate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        dailyReport.setEmpId(Integer.valueOf(empId));
+        dailyReport.setState(Integer.valueOf(state));
+        dailyReport.setCreateDate(DateUtil.formatDate(curDate));
 
-        dailyReport.setCreateDate(utilDate);
 
         int num=dailyReportMapper.insert(dailyReport);
         paramInfo.clear();

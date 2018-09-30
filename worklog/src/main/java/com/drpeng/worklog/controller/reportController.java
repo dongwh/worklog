@@ -47,11 +47,7 @@ public class ReportController {
         PageData pageData = new PageData(request);
         String curDate = request.getParameter("curDate");
         String content = request.getParameter("content");
-        String code = request.getParameter("code");
-        String userName = request.getParameter("userName");
-
-
-
+        String empId = request.getParameter("empId");
         if (null == curDate) {
             pageData.put("result", "提报时间不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
@@ -59,28 +55,22 @@ public class ReportController {
             return JsonUtil.toJson(pageData);
         }
 
+
         if (null == content) {
             pageData.put("result", "日报内容不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
         }
 
-        if (null == code) {
+/*        if (null == empId) {
             pageData.put("result", "填报人账号不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
-        }
-        if(null == userName) {
-
-            pageData.put("result", "填报人不能为空,请更正后,重新提交!");
-            pageData.put("result_code", "error");
-            return JsonUtil.toJson(pageData);
-        } else {
+        }*/ else {
 
             Map<String, Object> result = new HashMap<>();
-            pageData.clear();
-
             result = reportService.saveReport(pageData);
+            pageData.clear();
 
             if(null == result || result.size() == 0) {
                 pageData.put("result", "日报新增失败,请联系系统管理员!");
@@ -98,6 +88,8 @@ public class ReportController {
         }
 
     }
+
+
     @GetMapping("/report")
     public String queryReportByCreatDate (@RequestParam(value = "curdate", required = false) String curdate){
         HashMap<String, Object> param = new HashMap<String, Object>();
