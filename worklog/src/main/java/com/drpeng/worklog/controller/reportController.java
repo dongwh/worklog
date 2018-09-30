@@ -5,11 +5,24 @@ import com.drpeng.worklog.model.DailyReport;
 import com.drpeng.worklog.service.IReportService;
 import com.drpeng.worklog.util.JsonUtil;
 import com.drpeng.worklog.util.PageData;
+import com.drpeng.worklog.service.IReportService;
+import com.drpeng.worklog.util.*;
+import com.drpeng.worklog.util.ParameterUtil;
+import com.drpeng.worklog.model.DailyReport;
+import com.drpeng.worklog.service.IReportService;
+import com.drpeng.worklog.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +31,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 /**
  * Created by lihf on 2018-09-29.
  */
 @RestController
 public class ReportController {
 
-    public static Logger logger = LoggerFactory.getLogger(ReportController.class);
+
+    public  static Logger logger = LoggerFactory.getLogger(ReportController.class);
+
 
     @Autowired
     private IReportService reportService;
@@ -41,6 +54,7 @@ public class ReportController {
     }
 
 
+
     @PostMapping(value = "/saveReport", produces = "application/json")
     @ResponseBody
     public String saveReport(HttpServletRequest request, HttpSession session) {
@@ -48,10 +62,6 @@ public class ReportController {
         String curDate = request.getParameter("curDate");
         String content = request.getParameter("content");
         String code = request.getParameter("code");
-        String userName = request.getParameter("userName");
-
-
-
         if (null == curDate) {
             pageData.put("result", "提报时间不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
@@ -59,28 +69,28 @@ public class ReportController {
             return JsonUtil.toJson(pageData);
         }
 
+
         if (null == content) {
             pageData.put("result", "日报内容不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
         }
 
-        if (null == code) {
+/*        if (null == code) {
             pageData.put("result", "填报人账号不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
         }
-        if(null == userName) {
 
+        if (null == userName) {
             pageData.put("result", "填报人不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
-        } else {
+        }*/ else {
 
             Map<String, Object> result = new HashMap<>();
-            pageData.clear();
-
             result = reportService.saveReport(pageData);
+            pageData.clear();
 
             if(null == result || result.size() == 0) {
                 pageData.put("result", "日报新增失败,请联系系统管理员!");
@@ -98,6 +108,8 @@ public class ReportController {
         }
 
     }
+
+
     @GetMapping("/report")
     public String queryReportByCreatDate (@RequestParam(value = "curdate", required = false) String curdate){
         HashMap<String, Object> param = new HashMap<String, Object>();
