@@ -95,57 +95,37 @@
 		$("#forget-code").val("");
 		$("#tab-3").prop("checked",true);
 	}
-	
-	function login(){//登录
-		var username = $("#login-username").val(),
-			password = $("#login-password").val(),
-			validatecode = null,
-			flag = false;
-		//判断用户名密码是否为空
-		if(username == ""){
-			$.pt({
-        		target: $("#login-username"),
-        		position: 'r',
-        		align: 't',
-        		width: 'auto',
-        		height: 'auto',
-        		content:"用户名不能为空"
-        	});
-			flag = true;
-		}
-		if(password == ""){
-			$.pt({
-        		target: $("#login-password"),
-        		position: 'r',
-        		align: 't',
-        		width: 'auto',
-        		height: 'auto',
-        		content:"密码不能为空"
-        	});
-			flag = true;
-		}
-		//用户名只能是15位以下的字母或数字
-		var regExp = new RegExp("^[a-zA-Z0-9_]{1,15}$");
-		if(!regExp.test(username)){
-			$.pt({
-        		target: $("#login-username"),
-        		position: 'r',
-        		align: 't',
-        		width: 'auto',
-        		height: 'auto',
-        		content:"用户名必须为15位以下的字母或数字"
-        	});
-			flag = true;
-		}
-		
-		if(flag){
-			return false;
-		}else{//登录
-			//调用后台登录验证的方法
-			alert('登录成功');
-			return false;
-		}
-	}
+
+    //登录按钮
+    function login(){
+        var username = $("#login-username").val(),
+            password = $("#login-password").val();
+        if(username == "" || "" == password){
+            layer.alert("账号或密码不能为空");
+            return false;
+        }
+        $.ajax({
+            type: "post",
+            url: "validateLogin",
+            dataType:'json',
+            data: {
+                username: username,
+                password: password
+            },
+            success: function (data, status) {
+                console.info(data);
+                if(data.result_code=="success"){
+                    window.location.href ="dailyReport" ;
+                }else if(data.result_code=="error"){
+                    layer.alert(data.message)
+                }
+            },
+            <!--用户名密码验证失败-->
+            error: function () {
+                layer.alert("服务器错误")
+            }
+        });
+    }
 	
 	//注册
 	function register(){
