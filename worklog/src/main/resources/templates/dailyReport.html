@@ -76,8 +76,7 @@
 </div>
 </div>
 <script th:inline="javascript">
-
-
+    
     function saveDate() {
         debugger;
         var curDate=$("#curDate").val();
@@ -119,18 +118,21 @@
 
 
     function queryDate() {
-        var curDate=$("#curDate").val();
+        // var curDate=$("#curDate").val();
+        var curDate="2018-09-29";
         var myTable = datatableManager.dataObject = $('#example').dataTable($.extend({
             "ajax": function (data, callback, settings) {
 
             $.ajax({
-            type: "post",
+            type: "GET",
             url: "report",
             dataType:'json',
             data: {
                 curDate: curDate,
             },
-            success: function (data) {
+            contenttype: "application/x-www-form-urlencoded;charset=utf-8",
+
+             success: function (data) {
                 console.info(data);
                 if(data.result_code=="success"){
                     window.location.href = "index";
@@ -141,6 +143,44 @@
             error: function () {layer.alert("服务器错误")}
             });
             },
+            columns: [
+                {
+                    "render": function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {
+                    "data": "CREATE_DATE",
+                    "render": function (data) {
+                        if (null == data || data == undefined || "null" == data) {
+                            return "";
+                        } else {
+                            return data;
+                        }
+                    }
+                },
+                {
+                    "data": "EMP",
+                    "render": function (data) {
+                        if (null == data || data == undefined || "null" == data) {
+                            return "";
+                        } else {
+                            return data;
+                        }
+                    }
+                },
+                {
+                    "data": "CONTENT",
+                    "render": function (data) {
+                        if (null == data || data == undefined || "null" == data) {
+                            return "";
+                        } else {
+                            return data;
+                        }
+                    }
+                },
+
+            ]
         }, CONSTANT.DATA_TABLES.DEFAULT_OPTION)).api();
 
 
