@@ -27,7 +27,7 @@
     delete from daily_report_emp
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.drpeng.worklog.model.DailyReportEmp" keyColumn="ID" useGeneratedKeys="true">
+  <insert id="insert" parameterType="com.drpeng.worklog.model.DailyReportEmp">
 
     insert into daily_report_emp (ID, LOGIN_NAME, PASSWORD, 
       BRANCH, STAFF_NAME, STATE, 
