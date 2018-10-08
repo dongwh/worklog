@@ -28,7 +28,7 @@ public class ReportServiceImpl implements IReportService {
     public List<DailyReport> queryReport(String curdate){
 
 
-        List<DailyReport> reportList = dailyReportMapper.selectByCreateDate(curdate);
+        List<DailyReport> reportList = dailyReportMapper.selectByCreateDate(null);
         return reportList;
 
     }
@@ -61,4 +61,10 @@ public class ReportServiceImpl implements IReportService {
         }
         return paramInfo;
     }
+
+    @Override
+    public int delLog(String id) {
+        return dailyReportMapper.delLog(id);
+    }
+
 }

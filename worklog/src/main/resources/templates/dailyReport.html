@@ -8,10 +8,38 @@
     <link href="/plugin/tempo/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="/plugin/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     <link href="/plugin/tempo/css/templatemo_style.css" rel="stylesheet" type="text/css"/>
+    <link href="/plugin/pagination/pagination.css" rel="stylesheet" type="text/css"/>
     <script src="/plugin/jquery/jquery-2.1.4/jquery.min.js"></script>
-    <script src="/plugin/layer/layer.js"></script>
+    <!--<script src="/plugin/pagination/jquery.min.js"/>-->
+    <script src="/plugin/pagination/jquery.pagination.js"/>
+    <!--<script src="/plugin/layer/layer.js"></script>-->
     <script language="javascript" type="text/javascript" src="/date/My97DatePicker/WdatePicker.js"></script>
+    <style type="text/css">
+        .pagination a {
+            text-decoration: none;
+            border: 1px solid #AAE;
+            color: #15B;
+        }
 
+        .pagination a, .pagination span {
+            display: inline-block;
+            padding: 0.1em 0.4em;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .pagination .current {
+            background: #26B;
+            color: #fff;
+            border: 1px solid #AAE;
+        }
+
+        .pagination .current.prev, .pagination .current.next{
+            color:#999;
+            border-color:#999;
+            background:#fff;
+        }
+    </style>
 
 </head>
 <body class="templatemo-bg-gray">
@@ -37,6 +65,7 @@
         <div class="col-sm-7">
             <label class="col-sm-4 control-label no-padding-right" for="content">日报内容 : </label>
             <input type="text" id="content" placeholder="日报内容" class="form-control"  style="height: 130px" />
+            <input type="hidden" id="logId">
         </div>
     </div>
     <div class="clearfix form-actions">
@@ -45,10 +74,10 @@
                 <i class="ace-icon fa fa-undo bigger-150"></i>
                 确认
             </button>
-            <button class="btn btn-app btn-default" type="button" id="query" style="margin-left: 90px" th:onclick="'javascript:queryDate();'">
+            <!--<button class="btn btn-app btn-default" type="button" id="query" style="margin-left: 90px" th:onclick="'javascript:queryDate();'">
                 <i class="ace-icon fa fa-undo bigger-150"></i>
                 查询
-            </button>
+            </button>-->
         </div>
     </div>
 
@@ -66,7 +95,11 @@
                             <th>操作</th>
                         </tr>
                         </thead>
+                        <tbody id="log-body">
+
+                        </tbody>
                     </table>
+                    <div id="pagination" class="pagination"></div>
                 </div>
             </div>
         </div>
@@ -77,6 +110,59 @@
 </div>
 </div>
 <script th:inline="javascript">
+    $(function () {
+        LoadDataPage();
+    })
+
+
+    function LoadDataPage() {
+        var url = "/report";
+        var pageCount = 0;
+        var pageSize = 0;
+        var Page = 0;
+        $.ajax({
+            url: url,  //后台处理程序
+            type: "get",    //数据发送方式
+            async: false,
+            dataType: "json",   //接受数据格式
+            success: function (data) {
+                pageCount = parseInt(data.total);
+                pageSize = parseInt(data.pageSize);
+                $("#pagination").pagination(pageCount, {
+                    callback: pageselectCallback,
+                    num_edge_entries: 1,//两侧首尾分页条目数
+                    prev_text: "上一页",//上一页按钮里text
+                    prev_show_always: true,//是否上一页显示按钮
+                    next_text: "下一页",//下一页按钮里text
+                    next_show_always: true,//是否下一页显示按钮
+                    items_per_page: pageSize,//显示条数
+                    //current_page: 2, //当前页索引
+                    link_to: '#',//分页链接
+                    num_display_entries: 3//连续分页主体部分分页条目数
+                });
+            },
+            error: function () {
+                alert("服务器没有返回数据，可能服务器忙，请重试");
+            }
+        })
+    }
+    //分页回调函数
+    var pageselectCallback=function(page_id, jq) {
+        queryDate(page_id);
+       /* $.ajax({
+            async: false,
+            dataType: "xml",
+            type: "post",
+            url: "/Shift/GetIndex?page=" + (parseInt(page_id) + parseInt(1)), //请求的处理数据
+            //传入的参数，第一个参数就是分页的页数，第二个参数为排序的依据
+            //下面的操作就是成功返回数据以后，进行数据的绑定
+            success: function (data) {
+                var html = $(data).find("html").text();
+                $("#backHtml").html(html);
+            }
+        });*/
+    }
+
 
     function saveDate() {
         debugger;
@@ -114,74 +200,65 @@
     };
 
 
-    function queryDate() {
-        // var curDate=$("#curDate").val();
-        var curDate="2018-09-29";
-        var myTable = datatableManager.dataObject = $('#example').dataTable($.extend({
-            "ajax": function (data, callback, settings) {
-
-            $.ajax({
-            type: "GET",
-            url: "report",
-            dataType:'json',
+    function queryDate(page_id) {
+        $.ajax({
+            type: "get",
+            url: "/report",
+            dataType: 'json',
             data: {
-                curDate: curDate,
+                curPage: page_id
             },
-            contenttype: "application/x-www-form-urlencoded;charset=utf-8",
-
-             success: function (data) {
+            success: function (data, status) {
                 console.info(data);
-                if(data.result_code=="success"){
-                    window.location.href = "index";
-                }else if(data.result_code=="error"){
-                    layer.alert(data.message)
+                $('#log-body').html("");
+                var databody=data.list;
+                var bodystr=null;
+
+                for(var i=0;i<data.list.length;i++){
+                    bodystr="<tr class='itemLog'><td class='createDate'>"+(databody[i].createDate).replace("00:00:00",'')+"</td><td class='empId'>"+databody[i].empId+"</td><td class='content'>"+databody[i].content+"</td><td><a onclick='updateLog(this,"+databody[i].id+")'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;<a onclick='delLog("+databody[i].id+")'>删除</a></td></tr>";
+                    $('#log-body').append(bodystr);
+
+
                 }
+
             },
-            error: function () {layer.alert("服务器错误")}
+            <!--用户名密码验证失败-->
+            error: function () {
+               // layer.alert("服务器错误")
+            }
+        });
+    }
+
+    function delLog(id) {
+        var r=confirm("是否删除当前日志？");
+        if(r==true) {
+            $.ajax({
+                type: "get",
+                url: "/delLog",
+                dataType: 'json',
+                data: {
+                    id: id
+                },
+                success: function (data, status) {
+                    queryDate(0);
+
+                },
+                <!--用户名密码验证失败-->
+                error: function () {
+                    // layer.alert("服务器错误")
+                }
             });
-            },
-            columns: [
-                {
-                    "render": function (data, type, row, meta) {
-                        return meta.row + 1;
-                    }
-                },
-                {
-                    "data": "CREATE_DATE",
-                    "render": function (data) {
-                        if (null == data || data == undefined || "null" == data) {
-                            return "";
-                        } else {
-                            return data;
-                        }
-                    }
-                },
-                {
-                    "data": "EMP",
-                    "render": function (data) {
-                        if (null == data || data == undefined || "null" == data) {
-                            return "";
-                        } else {
-                            return data;
-                        }
-                    }
-                },
-                {
-                    "data": "CONTENT",
-                    "render": function (data) {
-                        if (null == data || data == undefined || "null" == data) {
-                            return "";
-                        } else {
-                            return data;
-                        }
-                    }
-                },
+        }
+    }
 
-            ]
-        }, CONSTANT.DATA_TABLES.DEFAULT_OPTION)).api();
+    function updateLog(obj,id) {
+        parent=$(obj).parents(".itemLog");
+        $("#logId").val(id);
+        alert(parent.find(".createDate").text());
+        $("#curDate").val(parent.find(".createDate").text());
+        $('#content').val(parent.find(".content").text());
 
-
-    };
+    }
 
 </script>
 

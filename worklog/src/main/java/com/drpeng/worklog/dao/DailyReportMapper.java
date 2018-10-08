@@ -30,4 +30,6 @@ public interface DailyReportMapper {
 
 
     int updateByPrimaryKey(DailyReport record);
+
+    int delLog(String id);
 }

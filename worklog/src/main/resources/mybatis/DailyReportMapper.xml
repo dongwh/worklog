@@ -15,7 +15,7 @@
   </resultMap>
   <sql id="Base_Column_List">
 
-    ID, EMP_ID, CREATE_DATE, STATE, EXT
+    ID, EMP_ID,  DATE_FORMAT(CREATE_DATE,'%Y-%m-%d') AS CREATE_DATE, STATE, EXT
   </sql>
   <sql id="Blob_Column_List">
 
@@ -37,13 +37,14 @@
     ,
     <include refid="Blob_Column_List" />
     from daily_report
-    where CREATE_DATE = #{createDate,jdbcType=DATE}
+      order by CREATE_DATE desc
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="delLog" parameterType="java.lang.String">
 
     delete from daily_report
     where ID = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.drpeng.worklog.model.DailyReport">
 
     insert into daily_report (ID, EMP_ID, CREATE_DATE, 

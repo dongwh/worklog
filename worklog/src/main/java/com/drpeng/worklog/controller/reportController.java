@@ -5,6 +5,8 @@ import com.drpeng.worklog.model.DailyReport;
 import com.drpeng.worklog.service.IReportService;
 import com.drpeng.worklog.util.JsonUtil;
 import com.drpeng.worklog.util.PageData;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,13 +93,29 @@ public class ReportController {
 
 
     @GetMapping("/report")
-    public String queryReportByCreatDate (@RequestParam(value = "curdate", required = false) String curdate){
-        HashMap<String, Object> param = new HashMap<String, Object>();
-        List<DailyReport> reportData = reportService.queryReport(curdate);
-        param.clear();
-        param.put("data", reportData);
-        param.put("total", reportData.size());
-        return JsonUtil.toJson(param);
+    @ResponseBody
+    public String queryReportByCreatDate (@RequestParam(value = "curPage", required = false) String curPage){
+
+        curPage = curPage == null || curPage.trim().length() == 0||curPage.equals("0") ? "1":(Integer.parseInt(curPage)+1)+"";
+        Integer page = Integer.parseInt(curPage)==1?1:Integer.parseInt(curPage);
+        Integer pageSize = 2;
+        PageHelper.startPage(page,pageSize);//设置分页的起始码以及页面大小
+        List<DailyReport> reportData = reportService.queryReport(null);
+        PageInfo pageInfo = new PageInfo(reportData);//传入list就可以了
+        return JsonUtil.toJson(pageInfo);
+
+    }
+
+    @GetMapping("/delLog")
+    @ResponseBody
+    public String delLog (@RequestParam(value = "id", required = true) String id){
+
+
+        int count=reportService.delLog(id);
+        Map<String ,Integer> result=new HashMap<String ,Integer>();
+        result.put("result",count);
+        return JsonUtil.toJson(result);
+
 
     }
 }

@@ -17,4 +17,5 @@ public interface IReportService {
     public Map<String, Object> saveReport(Map<String, Object> paramInfo);
 
 
+    int delLog(String id);
 }
