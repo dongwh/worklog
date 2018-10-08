@@ -40,7 +40,7 @@ public class ReportServiceImpl implements IReportService {
         //String curdate = String.valueOf(paramInfo.get("curdate")).replace("-","");
 
         String curDate = String.valueOf(paramInfo.get("curDate"));
-        //String userCode = String.valueOf(paramInfo.get("userCode"));
+        //String userCode = String.valueOf(paramInfo.get("userName"));
         String userCode = "9517";
         String content = String.valueOf(paramInfo.get("content"));
         String state = "1";
