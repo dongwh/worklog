@@ -23,4 +23,12 @@ public class LoginServiceImpl implements ILoginService {
         return data;
     }
 
+    public int register(String username){
+
+        //检查是否重复
+        int num =dailyReportEmpMapper.selectLoginNameCount(username);
+        //TODO 插入没写
+        return num;
+    }
+
 }

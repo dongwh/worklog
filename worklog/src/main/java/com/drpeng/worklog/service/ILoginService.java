@@ -10,4 +10,5 @@ import com.drpeng.worklog.model.DailyReportEmp;
  */
 public interface ILoginService {
    public DailyReportEmp login(String username, String password) ;
+   public int register(String username);
 }

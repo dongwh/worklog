@@ -29,6 +29,12 @@
     from daily_report_emp
     where LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
   </select>
+  <select id="selectLoginNameCount" parameterType="java.lang.String" resultMap="java.lang.Integer">
+    select
+    count (*)
+    from daily_report_emp
+    where LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 
     delete from daily_report_emp
