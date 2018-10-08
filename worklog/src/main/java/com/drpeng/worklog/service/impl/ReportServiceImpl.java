@@ -7,9 +7,6 @@ import com.drpeng.worklog.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +37,7 @@ public class ReportServiceImpl implements IReportService {
         //String curdate = String.valueOf(paramInfo.get("curdate")).replace("-","");
 
         String curDate = String.valueOf(paramInfo.get("curDate"));
+<<<<<<< HEAD
         //String userCode = String.valueOf(paramInfo.get("userName"));
         String userCode = "9517";
         String content = String.valueOf(paramInfo.get("content"));
@@ -57,6 +55,15 @@ public class ReportServiceImpl implements IReportService {
 */
        ;
        // dailyReport.setCreateDate(utilDate);
+=======
+        //String empId = String.valueOf(paramInfo.get("empId"));
+        String empId = "9517";
+        String content = String.valueOf(paramInfo.get("content"));
+        String state = "1";
+        dailyReport.setContent(content);
+        dailyReport.setEmpId(Integer.valueOf(empId));
+        dailyReport.setState(Integer.valueOf(state));
+>>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
         dailyReport.setCreateDate(DateUtil.formatDate(curDate));
 
 
@@ -64,10 +71,10 @@ public class ReportServiceImpl implements IReportService {
         paramInfo.clear();
         if (num > 0) {
             paramInfo.put("FLAG", "OK");
-            paramInfo.put("INFO", "新增成功,新增个数: " + num);
+            paramInfo.put("INFO", "日报新增成功: " + num);
         } else {
             paramInfo.put("FLAG", "NO");
-            paramInfo.put("INFO", "新增失败,请联系系统管理员!");
+            paramInfo.put("INFO", "日报新增失败,请联系系统管理员!");
         }
         return paramInfo;
     }
