@@ -10,7 +10,13 @@
     <link href="/plugin/tempo/css/templatemo_style.css" rel="stylesheet" type="text/css"/>
     <script src="/plugin/jquery/jquery-2.1.4/jquery.min.js"></script>
     <script src="/plugin/layer/layer.js"></script>
+<<<<<<< HEAD
+    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
+
+
+=======
     <script language="javascript" type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
+>>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
 </head>
 <body class="templatemo-bg-gray">
 <div class="container">
@@ -19,14 +25,24 @@
     <div class="form-group" id="d_month">
         <label class="col-sm-1 control-label no-padding-right" >日报时间 : </label>
         <div class="col-sm-3">
+<<<<<<< HEAD
+            <input type="text" id="curDate" name="curDate" placeholder="日报时间" class="form-control Wdate" style="height: 30px" readonly="readonly" onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowToday: false, isShowClear: false,skin:'whyGreen',maxDate:'%y-%M-%d' })"/>
+=======
             <input type="text" id="curDate" name="curDate" placeholder="日报时间" class="form-control Wdate" style="height: 30px"  onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowToday: false, isShowClear: false,skin:'whyGreen',maxDate:'%y-%M-%d' })"/>
+>>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
         </div>
     </div>
     <div class="space-4"></div>
     <div class="form-group" id="d_user">
+<<<<<<< HEAD
+        <label class="col-sm-1 control-label no-padding-right" for="username">汇报人 : </label>
+        <div class="col-sm-3">
+            <input type="hidden" id="username" name="username" th:value="${session.username}"/>
+=======
         <label class="col-sm-1 control-label no-padding-right" for="staffName">汇报人 : </label>
         <div class="col-sm-3">
             <input type="hidden" id="empId" name="empId" th:value="${session.empId}"/>
+>>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
             <input type="text" id="staffName" name="staffName" placeholder="汇报人" class="form-control" style="height: 30px" readonly="readonly" th:value="${session.staffName}" />
         </div>
     </div>
@@ -75,12 +91,20 @@
 </div>
 </div>
 <script th:inline="javascript">
+<<<<<<< HEAD
+=======
 
+>>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
     function saveDate() {
         debugger;
         var curDate=$("#curDate").val();
         var content=$("#content").val();
+<<<<<<< HEAD
+        var userCode=$("#code").val();
+        var userName=$("#username").val();
+=======
         var empId=$("#empId").val();
+>>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
         if(curDate == ""){
             layer.alert("请选择日期");
             return false;
@@ -91,7 +115,7 @@
         }
         $.ajax({
             type: "post",
-            url: "saveReport",
+            url: "http://localhost:9090/saveReport",
             dataType:'json',
             data: {
                 curDate: curDate,

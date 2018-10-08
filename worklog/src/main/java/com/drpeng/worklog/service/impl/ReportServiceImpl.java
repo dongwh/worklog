@@ -37,6 +37,25 @@ public class ReportServiceImpl implements IReportService {
         //String curdate = String.valueOf(paramInfo.get("curdate")).replace("-","");
 
         String curDate = String.valueOf(paramInfo.get("curDate"));
+<<<<<<< HEAD
+        //String userCode = String.valueOf(paramInfo.get("userName"));
+        String userCode = "9517";
+        String content = String.valueOf(paramInfo.get("content"));
+        String state = "1";
+        dailyReport.setContent(content);
+        dailyReport.setEmpId(Integer.valueOf(userCode));
+        dailyReport.setState(Integer.valueOf(state));
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       // Date utilDate = null;
+        /*try {
+            utilDate = sdf.parse(curDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+*/
+       ;
+       // dailyReport.setCreateDate(utilDate);
+=======
         //String empId = String.valueOf(paramInfo.get("empId"));
         String empId = "9517";
         String content = String.valueOf(paramInfo.get("content"));
@@ -44,6 +63,7 @@ public class ReportServiceImpl implements IReportService {
         dailyReport.setContent(content);
         dailyReport.setEmpId(Integer.valueOf(empId));
         dailyReport.setState(Integer.valueOf(state));
+>>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
         dailyReport.setCreateDate(DateUtil.formatDate(curDate));
 
 
