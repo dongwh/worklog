@@ -170,49 +170,23 @@
 				flag = true;
 			}
 		}
-		//用户名只能是15位以下的字母或数字
-		var regExp = new RegExp("^[a-zA-Z0-9_]{4,15}$");
-		if(!regExp.test(username)){
-			$.pt({
-        		target: $("#register-username"),
-        		position: 'r',
-        		align: 't',
-        		width: 'auto',
-        		height: 'auto',
-        		content:"用户名必须为4-15位的字母或数字"
-        	});
-			flag = true;
-		}
-		//检查用户名是否已经存在
-		//调后台代码检查用户名是否已经被注册
-		
-		//检查注册码是否正确
-		//调后台方法检查注册码，这里写死为11111111
-	/*	if(code != '11111111'){
-			$.pt({
-		        target: $("#register-code"),
-		        position: 'r',
-		        align: 't',
-		        width: 'auto',
-		        height: 'auto',
-		        content:"注册码不正确"
-		       });
-			flag = true;
-		}
-		*/
-		
+
 		if(flag){
 			return false;
 		}else{//注册
 			var param = 	{};
-			param.name =$('#register-username').val();
+			param.username =$('#register-username').val();
 			param.password=$('#register-password').val();
-			param.userName=$('#register-code').val();
+			param.code=$('#register-code').val();
             $.ajax({
                 async:false,
                 type: "POST",
-				url:"registe",
-                data:param,
+				url:"register",
+                data: {
+                    username: username,
+                    password: password,
+                    staffname:code
+                },
                 success:function(data){
                     if(data=='ok'){
                         spop({
@@ -240,7 +214,6 @@
                     alert("注册失败请联系管理员!");
                 }
 			})
-
 
 			return false;
 		}
