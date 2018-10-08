@@ -54,22 +54,14 @@ public class ReportController {
     }
 
 
-<<<<<<< HEAD
 
-    @PostMapping(value = "/saveReport", produces = "application/json")
-=======
     @PostMapping(value = "/dailyReport/saveReport", produces = "application/json")
->>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
     @ResponseBody
     public String saveReport(HttpServletRequest request, HttpSession session) {
         PageData pageData = new PageData(request);
         String curDate = request.getParameter("curDate");
         String content = request.getParameter("content");
-<<<<<<< HEAD
-        String code = request.getParameter("code");
-=======
         String empId = request.getParameter("empId");
->>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
         if (null == curDate) {
             pageData.put("result", "提报时间不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
@@ -84,23 +76,11 @@ public class ReportController {
             return JsonUtil.toJson(pageData);
         }
 
-<<<<<<< HEAD
-/*        if (null == code) {
-            pageData.put("result", "填报人账号不能为空,请更正后,重新提交!");
-            pageData.put("result_code", "error");
-            return JsonUtil.toJson(pageData);
-        }
 
-        if (null == userName) {
-            pageData.put("result", "填报人不能为空,请更正后,重新提交!");
-            pageData.put("result_code", "error");
-            return JsonUtil.toJson(pageData);
-=======
 /*        if (null == empId) {
             pageData.put("result", "填报人账号不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
             return JsonUtil.toJson(pageData);
->>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
         }*/ else {
 
             Map<String, Object> result = new HashMap<>();
@@ -125,11 +105,8 @@ public class ReportController {
     }
 
 
-<<<<<<< HEAD
-    @GetMapping("/report")
-=======
+
     @PostMapping("/report")
->>>>>>> a67c7ddb9a2996a8e6a4a0a545f1ee8acd4de11d
     public String queryReportByCreatDate (@RequestParam(value = "curdate", required = false) String curdate){
         HashMap<String, Object> param = new HashMap<String, Object>();
         List<DailyReport> reportData = reportService.queryReport(curdate);
