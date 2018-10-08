@@ -55,7 +55,8 @@ public class ReportController {
 
 
 
-    @PostMapping(value = "/dailyReport/saveReport", produces = "application/json")
+   // @PostMapping(value = "/dailyReport/saveReport", produces = "application/json")
+    @PostMapping(value = "/saveReport", produces = "application/json")
     @ResponseBody
     public String saveReport(HttpServletRequest request, HttpSession session) {
         PageData pageData = new PageData(request);
@@ -85,17 +86,14 @@ public class ReportController {
 
             Map<String, Object> result = new HashMap<>();
             result = reportService.saveReport(pageData);
-            pageData.clear();
-
-            if(null == result || result.size() == 0) {
-                pageData.put("result", "日报新增失败,请联系系统管理员!");
-                pageData.put("result_code", "error");
-            }
-            String flag = null == result.get("FLAG") ? "NO" : String.valueOf(result.get("FLAG"));
-            if("OK".equals(flag)) {
+            String flag = String.valueOf(result.get("FLAG"));
+            if("OK".equals(flag))
+            {
+                pageData.clear();
                 pageData.put("result_code", "success");
                 pageData.put("result", null == result.get("INFO") ? "日报新增成功!" : String.valueOf(result.get("INFO")));
             } else {
+                pageData.clear();
                 pageData.put("result", "日报新增失败,请联系系统管理员!");
                 pageData.put("result_code", "error");
             }
