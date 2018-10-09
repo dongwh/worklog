@@ -22,10 +22,16 @@
     from daily_report_emp
     where ID = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectByLoginName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByLoginName"  resultMap="BaseResultMap">
 
     select
     <include refid="Base_Column_List" />
+    from daily_report_emp
+    where PASSWORD = #{password,jdbcType=VARCHAR} AND LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectLoginNameCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count (*)
     from daily_report_emp
     where LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
   </select>

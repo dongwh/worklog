@@ -18,9 +18,17 @@ public class LoginServiceImpl implements ILoginService {
     private DailyReportEmpMapper dailyReportEmpMapper;
     public DailyReportEmp login(String username, String password) {
 
-        DailyReportEmp data=dailyReportEmpMapper.selectByLoginName(username);
+        DailyReportEmp data=dailyReportEmpMapper.selectByLoginName(username,password);
 
         return data;
+    }
+
+    public int register(String username){
+
+        //检查是否重复
+        int num =dailyReportEmpMapper.selectLoginNameCount(username);
+        //TODO 插入没写
+        return num;
     }
 
 }

@@ -52,17 +52,39 @@ public class LoginController {
         String password = request.getParameter("password");
         DailyReportEmp data = loginService.login(username, password);
 
-            if(password.equals(data.getPassword())) {
+            if(data==null||data.getPassword()==null) {
+                responseResult.put("result_code", "error");
+                responseResult.put("message", "账号 或 密码 输入错误,请重新输入");
+            }else{
                 session.setAttribute("username",data.getLoginName());
                 session.setAttribute("staffName",data.getStaffName());
                 session.setAttribute("empId",data.getId());
 
                 responseResult.put("result_code", "success");
                 responseResult.put("message", "登录成功");
-            } else {
-                responseResult.put("result_code", "error");
-                responseResult.put("message", "账号 或 密码 输入错误,请重新输入");
             }
+
+        return JsonUtil.toJson(responseResult);
+    }
+
+    @RequestMapping("/register")
+    @ResponseBody
+    public String register(HttpServletRequest request, HttpSession session) {
+        Map<String, Object> responseResult = new HashMap<String, Object>();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String staffname = request.getParameter("staffname");
+
+        int count = loginService.register(username);
+
+        if(count==0) {
+
+            responseResult.put("result_code", "success");
+            responseResult.put("message", "登录成功");
+        } else {
+            responseResult.put("result_code", "error");
+            responseResult.put("message", "登录名重复,请重新输入");
+        }
 
         return JsonUtil.toJson(responseResult);
     }
