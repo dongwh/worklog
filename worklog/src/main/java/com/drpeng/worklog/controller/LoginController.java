@@ -67,7 +67,7 @@ public class LoginController {
         return JsonUtil.toJson(responseResult);
     }
 
-    @RequestMapping("/register")
+    @RequestMapping("/registe")
     @ResponseBody
     public String register(HttpServletRequest request, HttpSession session) {
         Map<String, Object> responseResult = new HashMap<String, Object>();

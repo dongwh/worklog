@@ -183,13 +183,14 @@
             $.ajax({
                 async:false,
                 type: "POST",
-				url:"register",
+				url:"/register",
                 data: {
-                    username: username,
-                    password: password,
-                    staffname:code
+                    username: param.username,
+                    password: param.password,
+                    staffname:param.code
                 },
                 success:function(data){
+                    alert(3333);
                     if(data=='ok'){
                         spop({
                             template: '<h4 class="spop-title">注册成功</h4>即将于3秒后返回登录',
@@ -211,11 +212,14 @@
                             }
                         });
                     }else{
-                        alert("注册失败请联系管理员!");			}		},
+                        alert("注册失败请联系管理员!");
+                    }
+				},
 				error:function(data){
+
                     alert("注册失败请联系管理员!");
                 }
-			})
+			});
 
 			return false;
 		}
