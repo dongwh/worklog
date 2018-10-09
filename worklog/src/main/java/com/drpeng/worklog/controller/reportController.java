@@ -20,15 +20,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 /**
  * Created by lihf on 2018-09-29.
  */
 @RestController
 public class ReportController {
 
-    public static Logger logger = LoggerFactory.getLogger(ReportController.class);
+
+    public  static Logger logger = LoggerFactory.getLogger(ReportController.class);
+
 
     @Autowired
     private IReportService reportService;
@@ -42,7 +42,6 @@ public class ReportController {
         return modelAndView;
     }
 
-
     @PostMapping(value = "/saveReport", produces = "application/json")
     @ResponseBody
     public String saveReport(HttpServletRequest request, HttpSession session) {
@@ -50,6 +49,7 @@ public class ReportController {
         String curDate = request.getParameter("curDate");
         String content = request.getParameter("content");
         String empId = request.getParameter("empId");
+        String logId = request.getParameter("logId");
         if (null == curDate) {
             pageData.put("result", "提报时间不能为空,请更正后,重新提交!");
             pageData.put("result_code", "error");
@@ -71,22 +71,21 @@ public class ReportController {
         }*/ else {
 
             Map<String, Object> result = new HashMap<>();
-            result = reportService.saveReport(pageData);
-            pageData.clear();
+            reportService.saveReport(pageData);
 
-            if(null == result || result.size() == 0) {
-                pageData.put("result", "日报新增失败,请联系系统管理员!");
-                pageData.put("result_code", "error");
+            if(null == pageData || pageData.size() == 0) {
+                result.put("result", "日报提交失败,请联系系统管理员!");
+                result.put("result_code", "error");
             }
-            String flag = null == result.get("FLAG") ? "NO" : String.valueOf(result.get("FLAG"));
+            String flag = null == pageData.get("FLAG") ? "NO" : String.valueOf(pageData.get("FLAG"));
             if("OK".equals(flag)) {
-                pageData.put("result_code", "success");
-                pageData.put("result", null == result.get("INFO") ? "日报新增成功!" : String.valueOf(result.get("INFO")));
+                result.put("result_code", "success");
+                result.put("result", null == pageData.get("INFO") ? "日报提交成功!" : String.valueOf(pageData.get("INFO")));
             } else {
-                pageData.put("result", "日报新增失败,请联系系统管理员!");
-                pageData.put("result_code", "error");
+                result.put("result", "日报提交失败,请联系系统管理员!");
+                result.put("result_code", "error");
             }
-            return JsonUtil.toJson(pageData);
+            return JsonUtil.toJson(result);
         }
 
     }
@@ -94,13 +93,13 @@ public class ReportController {
 
     @GetMapping("/report")
     @ResponseBody
-    public String queryReportByCreatDate (@RequestParam(value = "curPage", required = false) String curPage){
-
+    public String queryReportByCreatDate (@RequestParam(value = "curPage", required = false) String curPage,HttpServletRequest request){
+        Integer empId=(Integer) request.getSession().getAttribute("empId");
         curPage = curPage == null || curPage.trim().length() == 0||curPage.equals("0") ? "1":(Integer.parseInt(curPage)+1)+"";
         Integer page = Integer.parseInt(curPage)==1?1:Integer.parseInt(curPage);
-        Integer pageSize = 2;
+        Integer pageSize = 10;
         PageHelper.startPage(page,pageSize);//设置分页的起始码以及页面大小
-        List<DailyReport> reportData = reportService.queryReport(null);
+        List<DailyReport> reportData = reportService.queryReport(empId);
         PageInfo pageInfo = new PageInfo(reportData);//传入list就可以了
         return JsonUtil.toJson(pageInfo);
 
@@ -115,6 +114,7 @@ public class ReportController {
         Map<String ,Integer> result=new HashMap<String ,Integer>();
         result.put("result",count);
         return JsonUtil.toJson(result);
+
 
 
     }

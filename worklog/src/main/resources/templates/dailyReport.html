@@ -10,10 +10,11 @@
     <link href="/plugin/tempo/css/templatemo_style.css" rel="stylesheet" type="text/css"/>
     <link href="/plugin/pagination/pagination.css" rel="stylesheet" type="text/css"/>
     <script src="/plugin/jquery/jquery-2.1.4/jquery.min.js"></script>
-    <!--<script src="/plugin/pagination/jquery.min.js"/>-->
     <script src="/plugin/pagination/jquery.pagination.js"/>
-    <!--<script src="/plugin/layer/layer.js"></script>-->
+
     <script language="javascript" type="text/javascript" src="/date/My97DatePicker/WdatePicker.js"></script>
+
+    <script src="/plugin/layer/layer.js"></script>
     <style type="text/css">
         .pagination a {
             text-decoration: none;
@@ -41,6 +42,7 @@
         }
     </style>
 
+    <script language="javascript" type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 </head>
 <body class="templatemo-bg-gray">
 <div class="container">
@@ -49,11 +51,13 @@
     <div class="form-group" id="d_month">
         <label class="col-sm-1 control-label no-padding-right" >日报时间 : </label>
         <div class="col-sm-3">
+
             <input type="text" id="curDate" name="curDate" placeholder="日报时间" class="form-control Wdate" style="height: 30px"  onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowToday: false, isShowClear: false,skin:'whyGreen',maxDate:'%y-%M-%d' })"/>
         </div>
     </div>
     <div class="space-4"></div>
     <div class="form-group" id="d_user">
+
         <label class="col-sm-1 control-label no-padding-right" for="staffName">汇报人 : </label>
         <div class="col-sm-3">
             <input type="hidden" id="empId" name="empId" th:value="${session.empId}"/>
@@ -67,19 +71,20 @@
             <input type="text" id="content" placeholder="日报内容" class="form-control"  style="height: 130px" />
             <input type="hidden" id="logId">
         </div>
-    </div>
-    <div class="clearfix form-actions">
-        <div class="col-md-offset-3 col-md-9" style="margin-top: 100px">
-            <button class="btn btn-app btn-default" type="button" id="submitBtn" style="margin-left: 90px" th:onclick="'javascript:saveDate();'">
-                <i class="ace-icon fa fa-undo bigger-150"></i>
-                确认
-            </button>
-            <!--<button class="btn btn-app btn-default" type="button" id="query" style="margin-left: 90px" th:onclick="'javascript:queryDate();'">
-                <i class="ace-icon fa fa-undo bigger-150"></i>
-                查询
-            </button>-->
+        <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9" style="margin-top: 10px">
+                <button class="btn btn-app btn-default" type="button" id="submitBtn" style="margin-left: 90px" th:onclick="'javascript:saveDate();'">
+                    <!--<i class="ace-icon fa fa-undo bigger-150"></i>-->
+                    提交
+                </button>
+                <!--<button class="btn btn-app btn-default" type="button" id="query" style="margin-left: 90px" th:onclick="'javascript:queryDate();'">
+                    <i class="ace-icon fa fa-undo bigger-150"></i>
+                    查询
+                </button>-->
+            </div>
         </div>
     </div>
+
 
 
     <div class="row">
@@ -110,8 +115,10 @@
 </div>
 </div>
 <script th:inline="javascript">
+    var flag=true;
     $(function () {
         LoadDataPage();
+
     })
 
 
@@ -149,18 +156,7 @@
     //分页回调函数
     var pageselectCallback=function(page_id, jq) {
         queryDate(page_id);
-       /* $.ajax({
-            async: false,
-            dataType: "xml",
-            type: "post",
-            url: "/Shift/GetIndex?page=" + (parseInt(page_id) + parseInt(1)), //请求的处理数据
-            //传入的参数，第一个参数就是分页的页数，第二个参数为排序的依据
-            //下面的操作就是成功返回数据以后，进行数据的绑定
-            success: function (data) {
-                var html = $(data).find("html").text();
-                $("#backHtml").html(html);
-            }
-        });*/
+
     }
 
 
@@ -168,6 +164,7 @@
         debugger;
         var curDate=$("#curDate").val();
         var content=$("#content").val();
+        var logId=$("#logId").val();
         var empId=$("#empId").val();
         if(curDate == ""){
             layer.alert("请选择日期");
@@ -179,22 +176,25 @@
         }
         $.ajax({
             type: "post",
-            url: "http://localhost:9090/saveReport",
+            url: "/saveReport",
             dataType:'json',
             data: {
                 curDate: curDate,
                 content: content,
-                empId:empId
+                empId:empId,
+                logId:logId
             },
             success: function (data, status) {
                 console.info(data);
                 if(data.result_code=="success"){
-                    window.location.href = "index";
+                    layer.alert(data.result)
+                    $("#content").val("");
+                    $("#logId").val("");
+                    LoadDataPage();
                 }else if(data.result_code=="error"){
                     layer.alert(data.message)
                 }
             },
-            <!--用户名密码验证失败-->
             error: function () {layer.alert("服务器错误")}
         });
     };
@@ -213,14 +213,19 @@
                 $('#log-body').html("");
                 var databody=data.list;
                 var bodystr=null;
-
+                var staffName=$("#staffName").val();
                 for(var i=0;i<data.list.length;i++){
-                    bodystr="<tr class='itemLog'><td class='createDate'>"+(databody[i].createDate).replace("00:00:00",'')+"</td><td class='empId'>"+databody[i].empId+"</td><td class='content'>"+databody[i].content+"</td><td><a onclick='updateLog(this,"+databody[i].id+")'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;<a onclick='delLog("+databody[i].id+")'>删除</a></td></tr>";
+                    bodystr="<tr class='itemLog'><td class='createDate'>"+(databody[i].createDate).replace("00:00:00",'')+"</td><td class='staffName'>"+staffName+"</td><td class='content'>"+databody[i].content+"</td><td><a onclick='updateLog(this,"+databody[i].id+")'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;<a onclick='delLog("+databody[i].id+")'>删除</a></td></tr>";
                     $('#log-body').append(bodystr);
 
 
                 }
-
+                if(flag==true){
+                    window.scrollTo(0,0);
+                    flag=false;
+                }else{
+                    window.scrollTo(0, document.documentElement.clientHeight);
+                }
             },
             <!--用户名密码验证失败-->
             error: function () {
@@ -230,7 +235,7 @@
     }
 
     function delLog(id) {
-        var r=confirm("是否删除当前日志？");
+        var r=confirm("是否删除当前日报？");
         if(r==true) {
             $.ajax({
                 type: "get",
@@ -240,7 +245,7 @@
                     id: id
                 },
                 success: function (data, status) {
-                    queryDate(0);
+                    LoadDataPage();
 
                 },
                 <!--用户名密码验证失败-->
@@ -252,9 +257,9 @@
     }
 
     function updateLog(obj,id) {
+        window.scrollTo(0,0);
         parent=$(obj).parents(".itemLog");
         $("#logId").val(id);
-        alert(parent.find(".createDate").text());
         $("#curDate").val(parent.find(".createDate").text());
         $('#content').val(parent.find(".content").text());
 

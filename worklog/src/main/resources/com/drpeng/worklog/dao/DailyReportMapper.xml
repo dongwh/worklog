@@ -30,14 +30,14 @@
     from daily_report
     where ID = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectByCreateDate" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs" >
+  <select id="selectByCreateDate" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs" >
 
     select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from daily_report
-      order by CREATE_DATE desc
+    from daily_report where EMP_ID=#{empId,jdbcType=INTEGER}
+    order by CREATE_DATE desc
   </select>
   <delete id="delLog" parameterType="java.lang.String">
 

@@ -19,10 +19,10 @@ public class WorklogApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		List<DailyReport> list = reportService.queryReport("2018-09-30");
+		/*List<DailyReport> list = reportService.queryReport("2018-09-30");
 		for (DailyReport dailyReport : list) {
 			System.out.println(dailyReport.getContent());
-		}
+		}*/
 	}
 
 }

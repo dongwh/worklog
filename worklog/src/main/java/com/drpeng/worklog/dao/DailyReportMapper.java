@@ -20,7 +20,7 @@ public interface DailyReportMapper {
 
     DailyReport selectByPrimaryKey(Integer id);
 
-    List<DailyReport> selectByCreateDate(String curdate);
+    List<DailyReport> selectByCreateDate(Integer empId);
 
 
     int updateByPrimaryKeySelective(DailyReport record);

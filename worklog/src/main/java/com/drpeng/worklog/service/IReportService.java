@@ -12,7 +12,7 @@ import java.util.Map;
  * @date 2018/9/29下午3:04
  */
 public interface IReportService {
-    public List<DailyReport> queryReport(String curdate);
+    public List<DailyReport> queryReport(Integer empId);
 
     public Map<String, Object> saveReport(Map<String, Object> paramInfo);
 

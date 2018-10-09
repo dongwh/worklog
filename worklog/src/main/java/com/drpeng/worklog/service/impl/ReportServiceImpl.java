@@ -7,9 +7,6 @@ import com.drpeng.worklog.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +22,10 @@ public class ReportServiceImpl implements IReportService {
     @Autowired
     private DailyReportMapper dailyReportMapper;
 
-    public List<DailyReport> queryReport(String curdate){
+    public List<DailyReport> queryReport(Integer empId){
 
 
-        List<DailyReport> reportList = dailyReportMapper.selectByCreateDate(null);
+        List<DailyReport> reportList = dailyReportMapper.selectByCreateDate(empId);
         return reportList;
 
     }
@@ -40,28 +37,37 @@ public class ReportServiceImpl implements IReportService {
         //String curdate = String.valueOf(paramInfo.get("curdate")).replace("-","");
 
         String curDate = String.valueOf(paramInfo.get("curDate"));
-        //String empId = String.valueOf(paramInfo.get("empId"));
-        String empId = "9517";
+
+        String empId = String.valueOf(paramInfo.get("empId"));
+        //String empId = "9517";
         String content = String.valueOf(paramInfo.get("content"));
+
         String state = "1";
         dailyReport.setContent(content);
         dailyReport.setEmpId(Integer.valueOf(empId));
         dailyReport.setState(Integer.valueOf(state));
         dailyReport.setCreateDate(DateUtil.formatDate(curDate));
+        int num=0;
+
+        if(paramInfo.get("logId")!=null&&!"".equals(paramInfo.get("logId"))){
+            Integer logId = Integer.parseInt((String)paramInfo.get("logId"));
+            dailyReport.setId(logId);
+            num=dailyReportMapper.updateByPrimaryKeyWithBLOBs(dailyReport);
+        }else{
+            num=dailyReportMapper.insert(dailyReport);
+        }
 
 
-        int num=dailyReportMapper.insert(dailyReport);
         paramInfo.clear();
         if (num > 0) {
             paramInfo.put("FLAG", "OK");
-            paramInfo.put("INFO", "新增成功,新增个数: " + num);
+            paramInfo.put("INFO", "日报提交成功: " + num+"条");
         } else {
             paramInfo.put("FLAG", "NO");
-            paramInfo.put("INFO", "新增失败,请联系系统管理员!");
+            paramInfo.put("INFO", "日报提交失败,请联系系统管理员!");
         }
         return paramInfo;
     }
-
     @Override
     public int delLog(String id) {
         return dailyReportMapper.delLog(id);
